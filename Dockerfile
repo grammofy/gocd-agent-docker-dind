@@ -63,3 +63,11 @@ COPY agent-bootstrapper-logback-include.xml agent-launcher-logback-include.xml a
 ADD docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+# install kubectl via download of binary as described at https://kubernetes.io/docs/tasks/tools/install-kubectl/#install-kubectl
+RUN curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl \
+  && chmod +x ./kubectl \
+  && mv ./kubectl /usr/bin/kubectl
+
+ADD trigger_deployment /usr/bin/trigger_deployment
+RUN chmod a+x /usr/bin/trigger_deployment
